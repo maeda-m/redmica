@@ -1,0 +1,30 @@
+ARG RUBY_VERSION
+FROM ruby:${RUBY_VERSION}-bullseye
+
+RUN set -eux; \
+  apt-get update; \
+  apt-get install -y --no-install-recommends \
+    \
+    locales \
+    \
+    libpq-dev \
+    \
+    imagemagick ghostscript fonts-urw-base35 \
+    \
+    cvs mercurial subversion git bzr \
+  ; \
+  rm -rf /var/lib/apt/lists/*
+
+RUN localedef -i ja_JP -c -f UTF-8 -A /usr/share/locale/locale.alias ja_JP.UTF-8
+
+# See: https://github.com/redmica/redmica_docker/blob/2.3.0/2.3.0/Dockerfile#L32-L33
+RUN sed -ri 's/(rights)="none" (pattern="PDF")/\1="read" \2/' /etc/ImageMagick-6/policy.xml
+
+WORKDIR /var/lib/redmine
+
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
+
+EXPOSE 3000
+CMD [ "bundle", "exec", "puma", "-e", "production" ]
