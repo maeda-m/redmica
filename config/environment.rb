@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Load the Rails application
-require File.expand_path('../application', __FILE__)
+# Load the Rails application.
+require_relative "application"
 
 # Make sure there's no plugin in vendor/plugin before starting
 vendor_plugins_dir = File.join(Rails.root, "vendor", "plugins")
@@ -12,5 +12,5 @@ if Dir.glob(File.join(vendor_plugins_dir, "*")).any?
   exit 1
 end
 
-# Initialize the Rails application
+# Initialize the Rails application.
 Rails.application.initialize!
