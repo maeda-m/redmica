@@ -634,7 +634,7 @@ module ApplicationHelper
                  'span', nil,
                  :class => "name icon icon-#{principal.class.name.downcase}"
                )
-            ) + principal
+            ) + h(principal)
         )
     end
     s.html_safe
