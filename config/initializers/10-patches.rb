@@ -49,16 +49,20 @@ module ActionView
   end
 
   class Resolver
-    def find_all(name, prefix=nil, partial=false, details={}, key=nil, locals=[])
-      locals = locals.map(&:to_s).sort!.freeze
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionview/lib/action_view/lookup_context.rb#L140
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionview/lib/action_view/lookup_context.rb#L223
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionview/lib/action_view/lookup_context.rb#L154-L156
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionview/lib/action_view/path_set.rb#L54
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionview/lib/action_view/template/resolver.rb#L64-L66
+    def find_all(name, prefix = nil, partial = false, details = {}, key = nil, locals = [])
+      if (details[:formats] & [:xml, :json]).any?
+        details = details.dup
+        details[:formats] = details[:formats].dup + [:api]
 
-      cached(key, [name, prefix, partial], details, locals) do
-        if (details[:formats] & [:xml, :json]).any?
-          details = details.dup
-          details[:formats] = details[:formats].dup + [:api]
-        end
-        _find_all(name, prefix, partial, details, key, locals)
+        key = ActionView::TemplateDetails::Requested.new(**details) if key
       end
+
+      _find_all(name, prefix, partial, details, key, locals)
     end
   end
 end
@@ -139,6 +143,19 @@ module ActionController
       def api(&block)
         any(:xml, :json, &block)
       end
+    end
+  end
+end
+
+module ActionDispatch
+  class APIParameterParser
+    def self.call(raw_post)
+      parameter_parsers = ActionDispatch::Request.parameter_parsers
+      data = parameter_parsers[:json].call(raw_post)
+    rescue JSON::ParserError => e
+      data = parameter_parsers[:xml].call(raw_post)
+    ensure
+      data
     end
   end
 end

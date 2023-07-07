@@ -30,6 +30,10 @@ module RedmineApp
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
+    # Initialize configuration defaults for originally generated Rails version.
+    # See: https://github.com/rails/rails/blob/v7.0.5.1/railties/lib/rails/application/configuration.rb
+    config.load_defaults 6.1
+
     config.active_record.store_full_sti_class = true
     config.active_record.default_timezone = :local
     config.active_record.yaml_column_permitted_classes = [
@@ -39,13 +43,10 @@ module RedmineApp
       ActiveSupport::HashWithIndifferentAccess,
       ActionController::Parameters
     ]
+    config.active_record.belongs_to_required_by_default = nil
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-
-    # Initialize configuration defaults for originally generated Rails version.
-    # See: https://github.com/rails/rails/blob/v7.0.5.1/railties/lib/rails/application/configuration.rb
-    config.load_defaults 6.1
 
     # Configuration for the application, engines, and railties goes here.
     #

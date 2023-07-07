@@ -791,4 +791,12 @@ class ApplicationController < ActionController::Base
   def _include_layout?(*args)
     api_request? ? false : super
   end
+
+  # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/abstract_controller/rendering.rb#L114
+  def _normalize_render(*args, &block) # :nodoc:
+    options = super
+    options[:content_type] = request.format if api_request?
+
+    options
+  end
 end

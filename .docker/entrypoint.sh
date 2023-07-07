@@ -55,7 +55,8 @@ bin/rails db:migrate redmine:plugins:migrate RAILS_ENV=production
 # bin/rails test:scm:setup:all
 # See: https://www.redmine.org/issues/33784
 # rm -fr tmp/test/mercurial_repository
-# PARALLEL_WORKERS=8 RAILS_ENV=test bundle exec rails test
+# bin/rails log:clear
+# bin/rails test RAILS_ENV=test
 # bin/rails test:scm:update
 
 exec "$@"
