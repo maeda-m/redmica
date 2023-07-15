@@ -57,6 +57,7 @@ bin/rails db:migrate redmine:plugins:migrate RAILS_ENV=production
 # rm -fr tmp/test/mercurial_repository
 # bin/rails log:clear
 # bin/rails test RAILS_ENV=test
+# bin/rails test:system RAILS_ENV=test
 # bin/rails test:scm:update
 
 exec "$@"

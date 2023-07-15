@@ -20,12 +20,6 @@ RUN localedef -i ja_JP -c -f UTF-8 -A /usr/share/locale/locale.alias ja_JP.UTF-8
 # See: https://github.com/redmica/redmica_docker/blob/2.3.0/2.3.0/Dockerfile#L32-L33
 RUN sed -ri 's/(rights)="none" (pattern="PDF")/\1="read" \2/' /etc/ImageMagick-6/policy.xml
 
-# See: https://bootcamp.fjord.jp/articles/30
-RUN apt update \
-  && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-  && apt install -y ./google-chrome-stable_current_amd64.deb \
-  && rm ./google-chrome-stable_current_amd64.deb
-
 WORKDIR /var/lib/redmine
 
 COPY entrypoint.sh /

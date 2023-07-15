@@ -16,6 +16,12 @@ services:
     environment:
       - HISTFILE=/histfile/.bash_history
       - REDMINE_TEST_LDAP_SERVER=openldap
+      - CAPYBARA_SERVER_HOST=redmine
+      - CAPYBARA_SERVER_PORT=4545
+      - CAPYBARA_APP_HOST=http://redmine:4545
+      - SELENIUM_REMOTE_URL=http://selenium:4444/wd/hub
+      # See: https://github.com/SeleniumHQ/selenium/issues/11780
+      - GOOGLE_CHROME_OPTS_ARGS=headless,disable-gpu,no-sandbox,disable-dev-shm-usage
     build:
       context: .docker
       dockerfile: Dockerfile.ap
@@ -26,6 +32,7 @@ services:
     depends_on:
       - postgres
       - openldap
+      - selenium
 
   # See: https://hub.docker.com/_/postgres
   postgres:
@@ -54,6 +61,11 @@ services:
       - LDAP_PORT_NUMBER=389
       - LDAP_SKIP_DEFAULT_TREE=yes
       - LDAP_CUSTOM_SCHEMA_FILE=/redmine/test-ldap.ldif
+
+  # See: https://hub.docker.com/r/selenium/standalone-chrome
+  selenium:
+    restart: 'no'
+    image: selenium/standalone-chrome:4.9.0
 
 volumes:
   ruby32:

@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 require_relative 'test_helper'
-require 'webdrivers/chromedriver'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   DOWNLOADS_PATH = File.expand_path(File.join(Rails.root, 'tmp', 'downloads'))
@@ -33,10 +32,16 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   options = {}
   # Allow running tests using a remote Selenium hub
-  options[:url] = ENV['SELENIUM_REMOTE_URL'] if ENV['SELENIUM_REMOTE_URL']
+  if ENV['SELENIUM_REMOTE_URL']
+    options[:url] = ENV['SELENIUM_REMOTE_URL']
+    options[:browser] = :remote
+  else
+    require 'webdrivers/chromedriver'
+    options[:browser] = :chrome
+  end
 
   driven_by(
-    :selenium, using: :chrome, screen_size: [1024, 900],
+    :selenium, screen_size: [1024, 900],
     options: options
   ) do |driver_option|
     driver_option.args = GOOGLE_CHROME_OPTS_ARGS
