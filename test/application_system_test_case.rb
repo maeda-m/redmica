@@ -34,21 +34,18 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   options = {}
   # Allow running tests using a remote Selenium hub
   options[:url] = ENV['SELENIUM_REMOTE_URL'] if ENV['SELENIUM_REMOTE_URL']
-  options[:desired_capabilities] = Selenium::WebDriver::Remote::Capabilities.chrome(
-                  'goog:chromeOptions' => {
-                    'args' => GOOGLE_CHROME_OPTS_ARGS,
-                    'prefs' => {
-                      'download.default_directory' => DOWNLOADS_PATH.gsub(File::SEPARATOR, File::ALT_SEPARATOR || File::SEPARATOR),
-                      'download.prompt_for_download' => false,
-                      'plugins.plugins_disabled' => ["Chrome PDF Viewer"]
-                    }
-                  }
-                )
 
   driven_by(
     :selenium, using: :chrome, screen_size: [1024, 900],
     options: options
-  )
+  ) do |driver_option|
+    driver_option.args = GOOGLE_CHROME_OPTS_ARGS
+    driver_option.prefs = {
+      'download.default_directory' => DOWNLOADS_PATH.gsub(File::SEPARATOR, File::ALT_SEPARATOR || File::SEPARATOR),
+      'download.prompt_for_download' => false,
+      'plugins.plugins_disabled' => ["Chrome PDF Viewer"]
+    }
+  end
 
   setup do
     # Allow defining a custom app host (useful when using a remote Selenium hub)
