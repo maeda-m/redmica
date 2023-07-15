@@ -65,7 +65,7 @@ services:
   # See: https://hub.docker.com/r/selenium/standalone-chrome
   selenium:
     restart: 'no'
-    image: selenium/standalone-chrome:4.9.0
+    image: selenium/standalone-chrome:4.10.0
 
 volumes:
   ruby32:

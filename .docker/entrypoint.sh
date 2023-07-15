@@ -23,21 +23,24 @@ fi
 
 if [ ! -e config/database.yml ]; then
   cat << EOS > config/database.yml
-production:
+default: &default
   adapter: postgresql
-  database: <%= ENV['POSTGRES_DB'] %>
   host: <%= ENV['POSTGRES_HOST'] %>
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
   encoding: utf8
 
+production:
+  <<: *default
+  database: <%= ENV['POSTGRES_DB'] %>
+
+development:
+  <<: *default
+  database: redmine_development
+
 test:
-  adapter: postgresql
+  <<: *default
   database: redmine_test
-  host: <%= ENV['POSTGRES_HOST'] %>
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
-  encoding: utf8
   template: template0
 EOS
 fi
