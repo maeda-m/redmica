@@ -149,6 +149,7 @@ end
 
 module ActionDispatch
   class APIParameterParser
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/http/parameters.rb#L93
     def self.call(raw_post)
       parameter_parsers = ActionDispatch::Request.parameter_parsers
       data = parameter_parsers[:json].call(raw_post)

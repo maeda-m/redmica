@@ -795,7 +795,14 @@ class ApplicationController < ActionController::Base
   # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/abstract_controller/rendering.rb#L114
   def _normalize_render(*args, &block) # :nodoc:
     options = super
-    options[:content_type] = request.format if api_request?
+
+    if api_request?
+      accept_mime_types = request.headers['HTTP_ACCEPT']&.split(',')
+      accept_mime_type = accept_mime_types&.find { |mime_type| Mime[:api].match?(mime_type) }
+
+      options[:content_type] = Mime::Type.lookup_by_extension(accept_mime_type.split('/').last) if accept_mime_type
+      options[:content_type] ||= request.format
+    end
 
     options
   end

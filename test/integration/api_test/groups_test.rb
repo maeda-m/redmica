@@ -65,7 +65,8 @@ class Redmine::ApiTest::GroupsTest < Redmine::ApiTest::Base
   end
 
   test "GET /groups.json should return groups" do
-    get '/groups.json', :headers => credentials('admin')
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/groups.json', :headers => credentials('admin'), as: :json
     assert_response :success
     assert_equal 'application/json', response.media_type
 

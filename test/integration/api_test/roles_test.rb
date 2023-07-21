@@ -35,7 +35,8 @@ class Redmine::ApiTest::RolesTest < Redmine::ApiTest::Base
   end
 
   test "GET /roles.json should return the roles" do
-    get '/roles.json'
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/roles.json', as: :json
 
     assert_response :success
     assert_equal 'application/json', @response.media_type

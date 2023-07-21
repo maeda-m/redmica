@@ -512,7 +512,8 @@ class Redmine::ApiTest::IssuesTest < Redmine::ApiTest::Base
     child = Issue.generate!(:parent_issue_id => parent.id, :estimated_hours => 3.0)
     TimeEntry.create!(:project => child.project, :issue => child, :user => child.author, :spent_on => child.author.today,
                       :hours => '2.5', :comments => '', :activity_id => TimeEntryActivity.first.id)
-    get '/issues/3.json'
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/issues/3.json', as: :json
 
     assert_equal 'application/json', response.media_type
     json = ActiveSupport::JSON.decode(response.body)
@@ -527,7 +528,8 @@ class Redmine::ApiTest::IssuesTest < Redmine::ApiTest::Base
     parent.update_columns :estimated_hours => 2.0
     child = Issue.generate!(:parent_issue_id => parent.id, :estimated_hours => 3.0)
     Role.anonymous.remove_permission! :view_time_entries
-    get '/issues/3.json'
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/issues/3.json', as: :json
 
     assert_equal 'application/json', response.media_type
     json = ActiveSupport::JSON.decode(response.body)
@@ -545,7 +547,8 @@ class Redmine::ApiTest::IssuesTest < Redmine::ApiTest::Base
     TimeEntry.generate!(:user => user, :hours => 5.5, :issue_id => parent.id)
     TimeEntry.generate!(:user => user, :hours => 2, :issue_id => child.id)
     TimeEntry.generate!(:user => User.find(1), :hours => 100, :issue_id => child.id)
-    get '/issues/3.json', :headers => credentials(user.login)
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/issues/3.json', :headers => credentials(user.login), as: :json
 
     assert_equal 'application/json', response.media_type
     json = ActiveSupport::JSON.decode(response.body)

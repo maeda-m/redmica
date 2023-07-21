@@ -34,7 +34,8 @@ class Redmine::ApiTest::MembershipsTest < Redmine::ApiTest::Base
   end
 
   test "GET /projects/:project_id/memberships.json should return memberships" do
-    get '/projects/1/memberships.json', :headers => credentials('jsmith')
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/projects/1/memberships.json', :headers => credentials('jsmith'), as: :json
 
     assert_response :success
     assert_equal 'application/json', @response.media_type
@@ -119,7 +120,8 @@ class Redmine::ApiTest::MembershipsTest < Redmine::ApiTest::Base
   end
 
   test "GET /memberships/:id.json should return the membership" do
-    get '/memberships/2.json', :headers => credentials('jsmith')
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/memberships/2.json', :headers => credentials('jsmith'), as: :json
 
     assert_response :success
     assert_equal 'application/json', @response.media_type

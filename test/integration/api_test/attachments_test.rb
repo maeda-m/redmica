@@ -116,7 +116,9 @@ class Redmine::ApiTest::AttachmentsTest < Redmine::ApiTest::Base
     patch(
       '/attachments/7.json',
       :params => {:attachment => {:filename => '', :description => 'updated'}},
-      :headers => credentials('jsmith')
+      :headers => credentials('jsmith'),
+      # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+      as: :json
     )
     assert_response 422
     assert_equal 'application/json', response.media_type
@@ -165,7 +167,9 @@ class Redmine::ApiTest::AttachmentsTest < Redmine::ApiTest::Base
         '/uploads.json',
         :headers => {
           "RAW_POST_DATA" => 'File content',
-          "CONTENT_TYPE" => 'application/octet-stream'
+          "CONTENT_TYPE" => 'application/octet-stream',
+          # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+          "HTTP_ACCEPT" => 'application/json'
         }.merge(credentials('jsmith'))
       )
       assert_response :created

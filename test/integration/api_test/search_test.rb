@@ -36,7 +36,8 @@ class Redmine::ApiTest::SearchTest < Redmine::ApiTest::Base
   end
 
   test "GET /search.json should return json content" do
-    get '/search.json'
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/search.json', as: :json
 
     assert_response :success
     assert_equal 'application/json', @response.media_type

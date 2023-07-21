@@ -57,7 +57,8 @@ class Redmine::ApiTest::UsersTest < Redmine::ApiTest::Base
   test "GET /users.json should return users" do
     users = User.active.order('login')
     users.last.update(twofa_scheme: 'totp')
-    get '/users.json', :headers => credentials('admin')
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/users.json', :headers => credentials('admin'), as: :json
 
     assert_response :success
     assert_equal 'application/json', response.media_type
@@ -276,7 +277,9 @@ class Redmine::ApiTest::UsersTest < Redmine::ApiTest::Base
             :mail_notification => 'only_assigned'
           }
         },
-        :headers => credentials('admin'))
+        :headers => credentials('admin'),
+        # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+        as: :json)
     end
 
     user = User.order('id DESC').first
@@ -320,7 +323,9 @@ class Redmine::ApiTest::UsersTest < Redmine::ApiTest::Base
             :login => 'foo', :lastname => 'Lastname', :mail => 'foo'
           }
         },
-        :headers => credentials('admin'))
+        :headers => credentials('admin'),
+        # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+        as: :json)
     end
 
     assert_response :unprocessable_entity
@@ -407,7 +412,9 @@ class Redmine::ApiTest::UsersTest < Redmine::ApiTest::Base
             :mail => 'foo'
           }
         },
-        :headers => credentials('admin'))
+        :headers => credentials('admin'),
+        # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+        as: :json)
     end
 
     assert_response :unprocessable_entity

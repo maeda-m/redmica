@@ -24,7 +24,8 @@ class Redmine::ApiTest::JsonpTest < Redmine::ApiTest::Base
 
   def test_should_ignore_jsonp_callback_with_jsonp_disabled
     with_settings :jsonp_enabled => '0' do
-      get '/trackers.json?jsonp=handler'
+      # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+      get '/trackers.json?jsonp=handler', as: :json
     end
 
     assert_response :success
@@ -64,7 +65,8 @@ class Redmine::ApiTest::JsonpTest < Redmine::ApiTest::Base
 
   def test_jsonp_without_callback_should_return_json
     with_settings :jsonp_enabled => '1' do
-      get '/trackers.json?callback='
+      # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+      get '/trackers.json?callback=', as: :json
     end
 
     assert_response :success

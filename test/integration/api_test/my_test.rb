@@ -24,7 +24,8 @@ class Redmine::ApiTest::MyTest < Redmine::ApiTest::Base
 
   test "GET /my/account.json should return user" do
     assert Setting.rest_api_enabled?
-    get '/my/account.json', :headers => credentials('dlopper', 'foo')
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get '/my/account.json', :headers => credentials('dlopper', 'foo'), as: :json
 
     assert_response :success
     assert_equal 'application/json', response.media_type
@@ -94,7 +95,9 @@ class Redmine::ApiTest::MyTest < Redmine::ApiTest::Base
           :login => 'dlopper', :firstname => '', :lastname => 'Lastname'
         }
       },
-      :headers => credentials('dlopper', 'foo'))
+      :headers => credentials('dlopper', 'foo'),
+      # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+      as: :json)
     assert_response :unprocessable_entity
     assert_equal 'application/json', @response.media_type
     json = ActiveSupport::JSON.decode(response.body)

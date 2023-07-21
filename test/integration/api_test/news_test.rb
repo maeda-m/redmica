@@ -79,7 +79,8 @@ class Redmine::ApiTest::NewsTest < Redmine::ApiTest::Base
   end
 
   test "GET /news/:id.json" do
-    get "/news/1.json"
+    # See: https://github.com/rails/rails/blob/7-0-stable/actionpack/lib/action_dispatch/testing/integration.rb#L256
+    get "/news/1.json", as: :json
     assert_response :success
     assert_equal 'application/json', response.media_type
     json = ActiveSupport::JSON.decode(response.body)
