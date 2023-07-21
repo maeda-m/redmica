@@ -51,6 +51,8 @@ if [ ! -e config/configuration.yml ]; then
 default:
   email_delivery:
     delivery_method: :letter_opener_web
+
+  minimagick_font_path: /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
 EOS
 fi
 
@@ -61,6 +63,7 @@ if [ ! -e config/initializers/secret_token.rb ]; then
 fi
 
 bin/rails db:migrate redmine:plugins:migrate RAILS_ENV=production
+# bin/rails db:fixtures:load RAILS_ENV=production
 
 # See: doc/RUNNING_TESTS
 # bin/rails db:create db:migrate redmine:plugins:migrate RAILS_ENV=test

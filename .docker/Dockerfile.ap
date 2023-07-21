@@ -9,7 +9,7 @@ RUN set -eux; \
     \
     libpq-dev \
     \
-    imagemagick ghostscript fonts-urw-base35 \
+    imagemagick ghostscript fonts-urw-base35 fonts-noto-cjk \
     \
     cvs mercurial subversion git bzr \
   ; \
