@@ -67,6 +67,11 @@ services:
     restart: 'no'
     image: selenium/standalone-chrome:4.10.0
 
+  # See: https://hub.docker.com/r/dovecot/dovecot
+  dovecot:
+    restart: 'no'
+    image: dovecot/dovecot
+
 volumes:
   ruby32:
   postgres15:

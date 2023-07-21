@@ -6,6 +6,7 @@ rm -f tmp/pids/server.pid
 
 if [ ! -e Gemfile.local ]; then
   echo "gem 'puma'" > Gemfile.local
+  echo "gem 'letter_opener_web'" >> Gemfile.local
 fi
 
 if [ ! -e config/puma.rb ]; then
@@ -42,6 +43,14 @@ test:
   <<: *default
   database: redmine_test
   template: template0
+EOS
+fi
+
+if [ ! -e config/configuration.yml ]; then
+  cat << EOS > config/configuration.yml
+default:
+  email_delivery:
+    delivery_method: :letter_opener_web
 EOS
 fi
 
