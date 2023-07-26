@@ -830,6 +830,7 @@ module Redmine
     class EnumerationFormat < RecordList
       add 'enumeration'
       self.form_partial = 'custom_fields/formats/enumeration'
+      self.customized_class_names = %w(Issue TimeEntry TimeEntryActivity Version Document Project)
 
       def label
         "label_field_format_enumeration"
