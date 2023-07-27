@@ -24,6 +24,7 @@ class UserQuery < Query
     QueryColumn.new(:firstname, sortable: "#{User.table_name}.firstname"),
     QueryColumn.new(:lastname, sortable: "#{User.table_name}.lastname"),
     QueryColumn.new(:mail, sortable: "#{EmailAddress.table_name}.address"),
+    QueryColumn.new(:mails, :caption => :label_email_address_plural),
     QueryColumn.new(:admin, sortable: "#{User.table_name}.admin"),
     QueryColumn.new(:created_on, :sortable => "#{User.table_name}.created_on"),
     QueryColumn.new(:updated_on, :sortable => "#{User.table_name}.updated_on"),
