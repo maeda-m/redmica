@@ -1,4 +1,7 @@
 <div class="contextual">
+<%= link_to l(:label_add_note), edit_issue_path(@issue),
+            :onclick => 'showAndScrollTo("update", "issue_notes"); hideFieldset($("#all_attributes").siblings("legend")[0]); return false;',
+            :class => 'icon icon-edit', :accesskey => accesskey(:edit) if @issue.editable? %>
 <%= link_to l(:button_edit), edit_issue_path(@issue),
             :onclick => 'showAndScrollTo("update", "issue_notes"); return false;',
             :class => 'icon icon-edit', :accesskey => accesskey(:edit) if @issue.editable? %>
