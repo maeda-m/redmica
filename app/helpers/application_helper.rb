@@ -1275,7 +1275,12 @@ module ApplicationHelper
           elsif sep == "@"
             name = remove_double_quotes(identifier)
             u = User.visible.find_by("LOWER(login) = :s AND type = 'User'", :s => name.downcase)
-            link = link_to_user(u, :only_path => only_path, :class => 'user-mention', :mention => true) if u
+            if u
+              link = link_to_user(u, :only_path => only_path, :class => 'user-mention', :mention => true)
+              if obj.is_a?(Journal) && obj.respond_to?(:visible?) && !obj.visible?(u)
+                link << content_tag('span', l(:notice_invalid_watcher), class: 'icon-only icon-warning', title: l(:notice_invalid_watcher))
+              end
+            end
           end
         end
         (leading + (link || "#{project_prefix}#{prefix}#{repo_prefix}#{sep}#{identifier}#{comment_suffix}"))
