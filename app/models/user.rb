@@ -78,6 +78,7 @@ class User < Principal
     ['only_my_events', :label_user_mail_option_only_my_events],
     ['only_assigned', :label_user_mail_option_only_assigned],
     ['only_owner', :label_user_mail_option_only_owner],
+    ['only_watched', :label_watched_issues],
     ['none', :label_user_mail_option_none]
   ]
 
