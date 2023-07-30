@@ -44,6 +44,7 @@ services:
       - postgres
       - openldap
       - selenium
+      - dovecot
 
   # See: https://hub.docker.com/_/postgres
   postgres:
@@ -81,7 +82,9 @@ services:
   # See: https://hub.docker.com/r/dovecot/dovecot
   dovecot:
     restart: 'no'
-    image: dovecot/dovecot
+    build:
+      context: .docker
+      dockerfile: Dockerfile.mail
 
 volumes:
   ruby32:

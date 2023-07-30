@@ -1,0 +1,4 @@
+FROM dovecot/dovecot
+
+# NOTE: bin/rails redmine:email:receive_pop3 host=dovecot username=redmine password=pass allow_override=all
+RUN echo 'disable_plaintext_auth = no' >> /etc/dovecot/dovecot.conf

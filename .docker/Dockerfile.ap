@@ -7,6 +7,8 @@ RUN set -eux; \
     \
     locales \
     \
+    telnet iproute2 iputils-ping \
+    \
     libpq-dev \
     \
     imagemagick ghostscript fonts-urw-base35 fonts-noto-cjk \
