@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  # See: https://hub.docker.com/_/httpd
+  httpd:
+    restart: 'no'
+    build:
+      context: .docker
+      dockerfile: Dockerfile.web
+    ports:
+      - '80:80'
+    depends_on:
+      - redmine
+
   # See: https://hub.docker.com/_/ruby
   redmine:
     restart: 'no'

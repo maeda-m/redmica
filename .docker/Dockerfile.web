@@ -1,0 +1,12 @@
+FROM httpd:2.4
+
+RUN sed -i \
+  -e 's/^#\(LoadModule .*mod_proxy.so\)/\1/' \
+	-e 's/^#\(LoadModule .*mod_proxy_http.so\)/\1/' \
+	-e 's/^#\(LoadModule .*mod_headers.so\)/\1/' \
+	conf/httpd.conf
+
+# See: https://httpd.apache.org/docs/2.4/en/mod/mod_proxy.html
+RUN  echo "ProxyRequests Off" >> conf/httpd.conf \
+  && echo "ProxyPass / http://redmine:3000/" >> conf/httpd.conf \
+  && echo "ProxyPassReverse / http://redmine:3000/" >> conf/httpd.conf
