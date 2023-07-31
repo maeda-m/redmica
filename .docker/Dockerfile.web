@@ -6,7 +6,33 @@ RUN sed -i \
 	-e 's/^#\(LoadModule .*mod_headers.so\)/\1/' \
 	conf/httpd.conf
 
-# See: https://httpd.apache.org/docs/2.4/en/mod/mod_proxy.html
-RUN  echo "ProxyRequests Off" >> conf/httpd.conf \
-  && echo "ProxyPass / http://redmine:3000/" >> conf/httpd.conf \
-  && echo "ProxyPassReverse / http://redmine:3000/" >> conf/httpd.conf
+# # See: https://httpd.apache.org/docs/2.4/en/mod/mod_proxy.html
+# RUN  echo "ProxyRequests Off" >> conf/httpd.conf \
+#   && echo "ProxyPass / http://redmine:3000/" >> conf/httpd.conf \
+#   && echo "ProxyPassReverse / http://redmine:3000/" >> conf/httpd.conf
+
+RUN echo "Include conf/redmine.conf" >> conf/httpd.conf
+COPY httpd/redmine.conf /usr/local/apache2/conf/
+
+# See: https://github.com/redmine/redmine/blob/master/extra/svn/Redmine.pm
+RUN set -eux; \
+  apt-get update; \
+  apt-get install -y --no-install-recommends \
+    wget build-essential \
+    git \
+    libperl-dev \
+    libdbd-pg-perl libpq-dev \
+    libapr1-dev libaprutil1-dev \
+  ; \
+  rm -rf /var/lib/apt/lists/*
+
+ENV MOD_PERL_VERSION=2.0.12
+RUN cd /usr/src/ \
+  && wget https://dlcdn.apache.org/perl/mod_perl-${MOD_PERL_VERSION}.tar.gz \
+  && tar xvf mod_perl-${MOD_PERL_VERSION}.tar.gz
+
+RUN cd /usr/src/mod_perl-${MOD_PERL_VERSION}/ \
+  && export LANG=C \
+  && perl Makefile.PL MP_APXS=/usr/local/apache2/bin/apxs \
+  && make \
+  && make install

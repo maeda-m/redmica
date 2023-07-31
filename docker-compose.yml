@@ -4,6 +4,11 @@ services:
   # See: https://hub.docker.com/_/httpd
   httpd:
     restart: 'no'
+    volumes:
+      - ./extra/svn:/usr/share/perl5/Apache/Authn
+      - gitrepos:/var/git
+    env_file:
+      - .docker/development.env
     build:
       context: .docker
       dockerfile: Dockerfile.web
@@ -21,6 +26,7 @@ services:
       - .:/var/lib/redmine
       - tmp_test:/var/lib/redmine/tmp/test
       - ruby32:/usr/local/bundle
+      - gitrepos:/var/git
       - history:/histfile
     env_file:
       - .docker/development.env
@@ -91,3 +97,4 @@ volumes:
   postgres15:
   history:
   tmp_test:
+  gitrepos:

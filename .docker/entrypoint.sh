@@ -65,6 +65,11 @@ fi
 bin/rails db:migrate redmine:plugins:migrate RAILS_ENV=production
 # bin/rails db:fixtures:load RAILS_ENV=production
 
+# See: https://www.redmine.org/projects/redmine/wiki/repositories_access_control_with_apache_mod_dav_svn_and_mod_perl
+gem install activeresource
+chown -R www-data:www-data /var/git
+# ruby extra/svn/reposman.rb -s /var/git -r localhost:3000 -u /var/git/ --scm git --owner www-data --key "Repository management WS API key"
+
 # See: doc/RUNNING_TESTS
 # bin/rails db:create db:migrate redmine:plugins:migrate RAILS_ENV=test
 # bin/rails test:scm:setup:all
